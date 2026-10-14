@@ -114,7 +114,7 @@ commands:
       # shim; loads no shim and makes no backend call.
       - name: storage_manifest
         phase: test
-        command: "python isvctl/configs/providers/shared/storage_manifest_to_steps.py"
+        command: "python isvctl/configs/shared/storage/storage_manifest_to_steps.py"
         timeout: 30
         env:
           STORAGE_PROVIDER_MANIFEST: "storage-provider-manifest.yaml"
