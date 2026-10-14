@@ -15,7 +15,7 @@ and the validation code.
 It holds two providers, `example` and `showcase`, one per directory, to show
 that one repository can hold several (for example one per product or version),
 each with its own registry entry. Both were generated with
-`isvctl provider scaffold`, and pass against release 0.13.0.
+`isvctl provider scaffold`, and pass against release 1.0.0.
 
 ## Reproducing the results
 
@@ -34,15 +34,15 @@ uv run isvctl test run --provider example --suite vm
 
 `showcase` works the same way.
 
-Release 0.13.0 predates the registry: clone this repository next to the
-checkout and pass the config path instead, from the checkout root. Here demo
-mode must be set by hand, and `--no-upload` keeps the dummy results out of the
-ISV Lab Service:
+Release 1.0.0 includes the registry. To run from a checkout of that tag by
+config path, clone this repository next to the checkout and pass the config
+path instead, from the checkout root. Here demo mode must be set by hand, and
+`--no-upload` keeps the dummy results out of the ISV Lab Service:
 
 ```bash
 git clone https://github.com/NVIDIA/ai-cloud-validation.git
 cd ai-cloud-validation
-git checkout v0.13.0
+git checkout v1.0.0
 uv sync
 git clone https://github.com/abegnoche/external-provider-example.git ../external-provider-example
 
