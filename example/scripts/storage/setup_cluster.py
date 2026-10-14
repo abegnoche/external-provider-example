@@ -34,7 +34,7 @@ def main() -> int:
         result.update(
             {
                 "success": True,
-                "kubeconfig_path": "/tmp/isvctl-demo-kubeconfig",
+                "kubeconfig_path": "/tmp/external-demo-kubeconfig",
                 "csi": {
                     "block_storage_class": "demo-block",
                     "shared_fs_storage_class": "demo-shared",

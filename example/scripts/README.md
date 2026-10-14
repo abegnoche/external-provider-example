@@ -72,7 +72,7 @@ target tests upstream scaffolds, not your edits in this repository.
 **2. Generate the scaffold and wiring under your provider name:**
 
 ```bash
-uv run isvctl provider scaffold acme --output-dir ../isvctl-provider-acme
+uv run isvctl provider scaffold acme --output-dir ../external-provider-acme
 ```
 
 Use `--dry-run` to preview the destination and next commands. Scaffolding
@@ -85,8 +85,8 @@ requires a validation-suite checkout that supports `isvctl provider scaffold`.
 From the validation checkout root, point at the generated provider config:
 
 ```bash
-uv run isvctl test run --no-upload -f ../isvctl-provider-acme/config/vm.yaml
-uv run isvctl test run --no-upload -f ../isvctl-provider-acme/config/storage.yaml --capability vm
+uv run isvctl test run --no-upload -f ../external-provider-acme/config/vm.yaml
+uv run isvctl test run --no-upload -f ../external-provider-acme/config/storage.yaml --capability vm
 ```
 
 Storage additionally needs a populated manifest; the examples here omit it.
@@ -125,18 +125,18 @@ git clone <ai-cloud-validation>
 cd ai-cloud-validation
 uv sync
 
-uv run isvctl provider scaffold acme --output-dir ../isvctl-provider-acme
+uv run isvctl provider scaffold acme --output-dir ../external-provider-acme
 ```
 
 Then initialize or connect that generated directory to your private Git repo
 and implement the scripts there:
 
 ```bash
-cd ../isvctl-provider-acme
+cd ../external-provider-acme
 git init
 # Remove the scaffold overwrite marker if present before maintaining this repository.
 rm -f .scaffold-meta
-git remote add origin git@github.com:acme/isvctl-provider-acme.git
+git remote add origin git@github.com:acme/external-provider-acme.git
 # implement scripts/*
 ```
 
@@ -145,7 +145,7 @@ config path:
 
 ```bash
 cd ../ai-cloud-validation
-uv run isvctl test run --no-upload -f ../isvctl-provider-acme/config/vm.yaml
+uv run isvctl test run --no-upload -f ../external-provider-acme/config/vm.yaml
 ```
 
 Current limitation: out-of-tree provider YAML assumes you run `isvctl` from
