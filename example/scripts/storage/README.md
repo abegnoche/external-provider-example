@@ -6,9 +6,9 @@ SPDX-License-Identifier: Apache-2.0
 # example storage shim
 
 Storage Provider Shim - one Python file per backend storage
-provider implementing the [`StorageApi`](../../../../../../isvtest/src/isvtest/core/storage_provider/api.py)
+provider implementing the [`StorageApi`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvtest/src/isvtest/core/storage_provider/api.py)
 ABC. Drives the storage acceptance subsets that
-the [`StorageProviderApiCheck`](../../../../../../isvtest/src/isvtest/validations/storage_provider.py)
+the [`StorageProviderApiCheck`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvtest/src/isvtest/validations/storage_provider.py)
 validation runs.
 
 ## The two pieces
@@ -65,12 +65,13 @@ for it. So you can't declare `provider.protocols: [lustre]` or
 `quotaManagement.directory: native` unless the shim actually backs it. Omit a
 field to leave it unchecked; declare a surface `none` to leave it unprobed.
 
-Two artifacts ship beside this README under `../../config/`:
+This repository does **not** ship a storage provider manifest, so its storage
+config cannot run as-is and is excluded from demo CI. To implement storage,
+start from the upstream templates, place your manifest in this provider's
+`config/` directory, and adapt its identity and shim path:
 
-- `storage-provider-manifest.yaml` — the **blank template** (one working
-  provider, heavily commented). Copy and fill it in.
-- `storage-provider-manifest.example.yaml` — a **fully-populated** multi-
-  provider reference showing every field.
+- [Blank manifest template](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/providers/my-isv/config/storage-provider-manifest.yaml)
+- [Populated manifest example](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/providers/my-isv/config/storage-provider-manifest.example.yaml)
 
 The schema is `isvctl/schemas/storage-provider-manifest.schema.json`.
 `v1alpha1` manifests still load.
@@ -78,7 +79,8 @@ The schema is `isvctl/schemas/storage-provider-manifest.schema.json`.
 ## Driving the tests
 
 The manifest drives `StorageProviderApiCheck` ONLY. `storage_manifest_to_steps.py`
-(`../../../shared/`) resolves the manifest path in a `storage_manifest` step and emits
+in the validation checkout (`isvctl/configs/providers/shared/`) resolves the
+manifest path in a `storage_manifest` step and emits
 `steps.storage_manifest.storage.manifest_path`, which the check loads in-process.
 
 The CSI / NFS / POSIX filesystem checks are config-driven like every other suite
@@ -86,11 +88,14 @@ check: set their StorageClass names via the `K8S_CSI_*` env vars (or literal
 overrides in your config). Resolution is **explicit YAML → `K8S_CSI_*` env var →
 skip**. [`../../config/storage.yaml`](../../config/storage.yaml) wires both:
 
+After adding and configuring the manifest, run from an AI Cloud Validation
+Suite checkout beside this repository:
+
 - Core run (shim check, no cluster):
 
   ```bash
   ISVCTL_DEMO_MODE=1 \
-    uv run isvctl test run -f isvctl/configs/providers/example/config/storage.yaml
+    uv run isvctl test run --no-upload -f ../isvctl-provider-example/example/config/storage.yaml
   ```
 
 - Kubernetes run (StorageProviderApiCheck from the manifest; CSI/filesystem
@@ -99,7 +104,7 @@ skip**. [`../../config/storage.yaml`](../../config/storage.yaml) wires both:
   ```bash
   export K8S_CSI_SHARED_FS_SC=example-rwx
   uv run isvctl test run \
-      -f isvctl/configs/providers/example/config/storage.yaml \
+      --no-upload -f ../isvctl-provider-example/example/config/storage.yaml \
       --capability kubernetes \
       -- -k "K8sCsi or K8sFile or K8sNfs or StorageProviderApi"
   ```
@@ -145,23 +150,18 @@ The skeleton ships with a `DEMO_MODE = os.environ.get("ISVCTL_DEMO_MODE")
 `AuthenticationError` to make it obvious the backend isn't wired up; demo runs
 return dummy data so the validation passes end-to-end. The optional
 `create_volume` / `delete_volume` stay raising `NotSupportedError` either way
-(volume-provisioning then reports a clean skip). To exercise the storage check in demo mode:
+(volume-provisioning then reports a clean skip). After adding and configuring
+the missing manifest, exercise the shim in demo mode:
 
 ```bash
 ISVCTL_DEMO_MODE=1 \
-  uv run isvctl test run -f isvctl/configs/providers/example/config/storage.yaml
+  uv run isvctl test run --no-upload -f ../isvctl-provider-example/example/config/storage.yaml
 ```
 
-## What ships at handover
+## Delivering a real provider
 
-Once your `api.py` is real, the production delivery bundles:
-
-- The manifest (`config/storage-provider-manifest.yaml`) into a well-known
-  ConfigMap (default name `storage-provider-manifest`).
-- Each provider's `api.py` (plus optional `config.yaml`) into a
-  provider-chosen per-provider ConfigMap.
-- Per-provider credentials into a provider-chosen Secret.
-
-The future operator sidecar (out of scope for this iteration) will load
-the same `api.py` from its ConfigMap mount and serve the canonical REST
-contract on `localhost:9090`.
+Keep the implemented shim and its configured manifest together in your provider
+repository. Supply credentials through your deployment's secret management;
+do not commit credentials or include them in example output. See the upstream
+[Storage Provider API guide](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvtest/src/isvtest/core/storage_provider/README.md)
+for the contract and integration details.

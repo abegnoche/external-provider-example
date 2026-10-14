@@ -1,0 +1,22 @@
+name: Documentation request
+description: Request new documentation or a correction to existing guidance.
+title: "docs: "
+body:
+  - type: textarea
+    id: location
+    attributes:
+      label: Missing or incorrect documentation
+      description: Include the relevant file or page and explain what is missing or incorrect.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Community guidelines
+      options:
+        - label: I have read and agree to follow this repository's CODE_OF_CONDUCT.md.
+          required: true

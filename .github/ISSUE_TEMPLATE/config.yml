@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://www.nvidia.com/en-us/security/
+    about: Use NVIDIA's security reporting channels; do not disclose vulnerabilities in public issues.
+  - name: AI Cloud Validation Suite questions
+    url: https://github.com/NVIDIA/ai-cloud-validation/discussions
+    about: Ask general questions about the CLI, validation suites, and provider registry upstream.

@@ -1,8 +1,9 @@
 # isvctl-provider-example
 
-> **Example only - not a real provider.** Every script here is an unimplemented
-> scaffold: it returns dummy success under `ISVCTL_DEMO_MODE=1` and
-> "Not implemented" otherwise. A passing run says nothing about any platform.
+> **Example only - not a real provider.** The provider stubs return dummy
+> success under `ISVCTL_DEMO_MODE=1` and fail otherwise. Kubernetes and Slurm
+> scripts query real clusters and are not part of the demo checks.
+> A passing demo run says nothing about any platform.
 > This repository is not an NVIDIA-supported product.
 
 A living example of externally maintained providers for the
@@ -18,8 +19,8 @@ each with its own registry entry. Both were generated with
 
 ## Reproducing the results
 
-These providers implement nothing, so they only run in demo mode
-(`ISVCTL_DEMO_MODE=1`); without it each script fails with "Not implemented".
+The demo suites exercise unimplemented provider stubs with
+`ISVCTL_DEMO_MODE=1`; without it those stubs fail with "Not implemented".
 
 From an ai-cloud-validation checkout with the provider registry
 (`isvctl provider fetch`), fetch one by name and run it like any provider. Their
@@ -56,6 +57,11 @@ Some suites need a capability, mirroring the suite's `make demo-test`:
 | `network`, `observability`, `security` | `--capability vm` |
 | `image-registry` | once with `--capability vm`, once with `--capability bare_metal` |
 
+The [validation workflow](.github/workflows/validate.yml) checks this matrix for
+both providers against the latest suite release. Kubernetes and Slurm require
+real clusters. Storage requires `config/storage-provider-manifest.yaml`, which
+neither example ships, so these three suites are excluded from the demo matrix.
+
 ## Layout
 
 Each provider directory (`example/`, `showcase/`) contains:
@@ -63,6 +69,15 @@ Each provider directory (`example/`, `showcase/`) contains:
 - `config/` - YAML wiring: each file imports a suite and points its steps at `scripts/`.
 - `scripts/` - the scaffold scripts, one directory per domain. See
   [`example/scripts/README.md`](example/scripts/README.md) for the script contract.
+
+## Community and security
+
+- [Contributing](CONTRIBUTING.md) - development, validation, pull requests, and DCO sign-off.
+- [Code of Conduct](CODE_OF_CONDUCT.md) - community standards and reporting conduct issues.
+- [Security](SECURITY.md) - private vulnerability reporting and execution assumptions.
+
+This repository is currently hosted under `abegnoche`; a transfer to the NVIDIA
+organization is planned. The clone URL above reflects its current location.
 
 ## License
 

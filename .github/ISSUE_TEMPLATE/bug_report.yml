@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a problem with the example providers or their compatibility checks.
+title: "bug: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search existing issues before reporting a bug. Do not disclose vulnerabilities
+        here; use NVIDIA's security reporting channels. Remove credentials and sensitive
+        infrastructure details from commands and logs.
+  - type: input
+    id: revisions
+    attributes:
+      label: Revisions
+      description: Include this repository's commit and the AI Cloud Validation Suite version or commit.
+    validations:
+      required: true
+  - type: input
+    id: provider
+    attributes:
+      label: Provider and suite
+      placeholder: example / vm
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and environment
+      description: Include your OS, exact command, config changes, and whether demo mode was enabled.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Remove secrets and sensitive data before sharing.
+      render: text
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Community guidelines
+      options:
+        - label: I have read and agree to follow this repository's CODE_OF_CONDUCT.md.
+          required: true

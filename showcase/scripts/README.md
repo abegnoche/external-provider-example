@@ -2,10 +2,10 @@
 
 Copy-and-fill-in scripts for adding your own platform to the validation suite.
 
-Each script ships with a TODO block and two behaviors:
+The Python provider stubs ship with TODO blocks and two behaviors:
 
 - **Default run** - exits with `"Not implemented - ..."`, making it obvious where to fill in your platform's API calls.
-- **Demo mode** (`ISVCTL_DEMO_MODE=1`) - returns dummy-success JSON so the whole pipeline runs end-to-end without any cloud. Used by `make demo-test`.
+- **Demo mode** (`ISVCTL_DEMO_MODE=1`) - returns dummy-success JSON so the whole pipeline runs end-to-end without any cloud. Used by this repository's demo CI matrix.
 
 ## The three pieces that make this work
 
@@ -13,82 +13,83 @@ Each script ships with a TODO block and two behaviors:
 suites/*.yaml                    <- contract   (what to validate; platform-agnostic)
                   │
                   ▼ imported by
-providers/showcase/config/*.yaml   <- wiring     (which scripts implement each step)
+showcase/config/*.yaml            <- wiring     (which scripts implement each step)
                   │
                   ▼ invokes
-providers/showcase/scripts/<domain>/*.py  <- scaffold   (generated for you; fill in TODO blocks)
+showcase/scripts/<domain>/*.py     <- scaffold   (generated for you; fill in TODO blocks)
 ```
 
-The `suites/` layer is the validation contract - you never modify it, you
-`import:` it from your provider config. Generate a provider scaffold from this
-template, then fill in the TODOs.
+The `suites/` layer lives in the AI Cloud Validation Suite checkout and defines
+the validation contract. Import it from your provider config, then implement the
+provider scripts against that contract.
 
 ## Domains
 
 | Domain | Scripts | Contract | Provider YAML | AWS reference |
 |--------|---------|----------|---------------|---------------|
-| `iam/` | 3 | [`suites/iam.yaml`](../../../suites/iam.yaml) | [`config/iam.yaml`](../config/iam.yaml) | [`providers/aws/scripts/iam/`](../../aws/scripts/iam/) |
-| `control-plane/` | 11 | [`suites/control-plane.yaml`](../../../suites/control-plane.yaml) | [`config/control-plane.yaml`](../config/control-plane.yaml) | [`providers/aws/scripts/control-plane/`](../../aws/scripts/control-plane/) |
-| `vm/` | 12 | [`suites/vm.yaml`](../../../suites/vm.yaml) | [`config/vm.yaml`](../config/vm.yaml) | [`providers/aws/scripts/vm/`](../../aws/scripts/vm/) |
-| `bare_metal/` | 14 | [`suites/bare_metal.yaml`](../../../suites/bare_metal.yaml) | [`config/bare_metal.yaml`](../config/bare_metal.yaml) | [`providers/aws/scripts/bare_metal/`](../../aws/scripts/bare_metal/) |
-| `storage/` | 21 | [`suites/storage.yaml`](../../../suites/storage.yaml) | [`config/storage.yaml`](../config/storage.yaml) | [`providers/aws/scripts/storage/`](../../aws/scripts/storage/) |
-| `network/` | 24 | [`suites/network.yaml`](../../../suites/network.yaml) | [`config/network.yaml`](../config/network.yaml) | [`providers/aws/scripts/network/`](../../aws/scripts/network/) |
-| `observability/` | 5 | [`suites/observability.yaml`](../../../suites/observability.yaml) | [`config/observability.yaml`](../config/observability.yaml) | [`providers/aws/scripts/observability/`](../../aws/scripts/observability/) |
-| `image-registry/` | 7 | [`suites/image-registry.yaml`](../../../suites/image-registry.yaml) | [`config/image-registry.yaml`](../config/image-registry.yaml) | [`providers/aws/scripts/image-registry/`](../../aws/scripts/image-registry/) |
-| `security/` | 17 | [`suites/security.yaml`](../../../suites/security.yaml) | [`config/security.yaml`](../config/security.yaml) | [`providers/aws/scripts/security/`](../../aws/scripts/security/), [`providers/aws/scripts/capacity/`](../../aws/scripts/capacity/) |
-| `k8s/` | 9 shell | [`suites/k8s.yaml`](../../../suites/k8s.yaml) | [`config/k8s.yaml`](../config/k8s.yaml) | [`providers/aws/scripts/eks/`](../../aws/scripts/eks/) |
-| `slurm/` | 2 shell | [`suites/slurm.yaml`](../../../suites/slurm.yaml) | [`config/slurm.yaml`](../config/slurm.yaml) | - |
-| `breakfix/` | 14 | [`suites/bare_metal.yaml`](../../../suites/bare_metal.yaml), [`suites/k8s.yaml`](../../../suites/k8s.yaml) | [`config/bare_metal.yaml`](../config/bare_metal.yaml), [`config/k8s.yaml`](../config/k8s.yaml) | - |
+| `iam/` | 3 | [`suites/iam.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/iam.yaml) | [`config/iam.yaml`](../config/iam.yaml) | [`providers/aws/scripts/iam/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/iam) |
+| `control-plane/` | 11 | [`suites/control-plane.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/control-plane.yaml) | [`config/control-plane.yaml`](../config/control-plane.yaml) | [`providers/aws/scripts/control-plane/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/control-plane) |
+| `vm/` | 12 | [`suites/vm.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/vm.yaml) | [`config/vm.yaml`](../config/vm.yaml) | [`providers/aws/scripts/vm/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/vm) |
+| `bare_metal/` | 14 | [`suites/bare_metal.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/bare_metal.yaml) | [`config/bare_metal.yaml`](../config/bare_metal.yaml) | [`providers/aws/scripts/bare_metal/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/bare_metal) |
+| `storage/` | 21 | [`suites/storage.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/storage.yaml) | [`config/storage.yaml`](../config/storage.yaml) | [`providers/aws/scripts/storage/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/storage) |
+| `network/` | 24 | [`suites/network.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/network.yaml) | [`config/network.yaml`](../config/network.yaml) | [`providers/aws/scripts/network/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/network) |
+| `observability/` | 5 | [`suites/observability.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/observability.yaml) | [`config/observability.yaml`](../config/observability.yaml) | [`providers/aws/scripts/observability/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/observability) |
+| `image-registry/` | 7 | [`suites/image-registry.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/image-registry.yaml) | [`config/image-registry.yaml`](../config/image-registry.yaml) | [`providers/aws/scripts/image-registry/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/image-registry) |
+| `security/` | 17 | [`suites/security.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/security.yaml) | [`config/security.yaml`](../config/security.yaml) | [`providers/aws/scripts/security/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/security), [`providers/aws/scripts/capacity/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/capacity) |
+| `k8s/` | 9 shell | [`suites/k8s.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/k8s.yaml) | [`config/k8s.yaml`](../config/k8s.yaml) | [`providers/aws/scripts/eks/`](https://github.com/NVIDIA/ai-cloud-validation/tree/main/isvctl/configs/providers/aws/scripts/eks) |
+| `slurm/` | 2 shell | [`suites/slurm.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/slurm.yaml) | [`config/slurm.yaml`](../config/slurm.yaml) | - |
+| `breakfix/` | 14 | [`suites/bare_metal.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/bare_metal.yaml), [`suites/k8s.yaml`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/k8s.yaml) | [`config/bare_metal.yaml`](../config/bare_metal.yaml), [`config/k8s.yaml`](../config/k8s.yaml) | - |
 
 The `k8s/` and `slurm/` examples drive a **real** cluster (validations shell out
-to `kubectl` / `sinfo`), so they are not part of `make demo-test` — a
-dummy-success stub has nothing to return for them.
+to `kubectl` / `sinfo`), so they are excluded from the demo CI matrix.
 
 > The `storage/` domain is the first to use the Storage
-> Provider Shim (the [`StorageApi`](../../../../../isvtest/src/isvtest/core/storage_provider/api.py)
+> Provider Shim (the [`StorageApi`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvtest/src/isvtest/core/storage_provider/api.py)
 > ABC) instead of
 > per-test-case scripts: one [`api.py`](storage/api.py) per backend
-> subclasses `StorageApi` and a [provider manifest](../config/storage-provider-manifest.yaml)
-> declares which `api.py` to load. See [`storage/README.md`](storage/README.md)
-> for the authoring guide.
+> subclasses `StorageApi` and a [provider manifest](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/providers/my-isv/config/storage-provider-manifest.yaml)
+> declares which `api.py` to load. This repository does not ship that manifest;
+> the link points to the upstream template, which must be adapted before storage
+> runs. See [`storage/README.md`](storage/README.md) for the authoring guide.
 
-See [`suites/README.md`](../../../suites/README.md) for the per-step / per-field breakdown.
+See [`suites/README.md`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/README.md) for the per-step / per-field breakdown.
 
 ## Usage
 
-**1. Preview the pipeline with no cloud (~10s):**
+**1. Preview the VM pipeline with no cloud:**
+
+Run from an AI Cloud Validation Suite checkout beside this repository:
 
 ```bash
-make demo-test
+ISVCTL_DEMO_MODE=1 uv run isvctl test run --no-upload \
+  -f ../isvctl-provider-example/showcase/config/vm.yaml
 ```
+
+See the [repository README](../../README.md#reproducing-the-results) for the
+other demo suites and their capability flags. The upstream `make demo-test`
+target tests upstream scaffolds, not your edits in this repository.
 
 **2. Generate the scaffold and wiring under your provider name:**
 
 ```bash
-uv run isvctl provider scaffold acme
+uv run isvctl provider scaffold acme --output-dir ../isvctl-provider-acme
 ```
 
-It is created in `isvctl/configs/providers-external/acme/` (git-ignored; see
-[Private provider repositories](#private-provider-repositories)). Use `--dry-run`
-to preview the destination and next commands, or `--output-dir` to generate it
-elsewhere, including `isvctl/configs/providers/acme` for a provider contributed
-to this repository.
+Use `--dry-run` to preview the destination and next commands. Scaffolding
+requires a validation-suite checkout that supports `isvctl provider scaffold`.
 
 **3. Implement each script** - each has a `TODO:` block with pseudocode and a link to the AWS reference implementation.
 
-**4. Run for real (no demo flag):**
+**4. Run your implemented provider (no demo flag):**
+
+From the validation checkout root, point at the generated provider config:
 
 ```bash
-# A platform suite - the obligation attached to declaring that capability
-uv run isvctl test run --provider acme --suite vm
-
-# A plain suite: core checks by default, capability-gated checks when you name one
-uv run isvctl test run --provider acme --suite storage
-uv run isvctl test run --provider acme --suite storage --capability vm
-
-# Or point at the config file directly - the same capability rule applies
-uv run isvctl test run -f isvctl/configs/providers-external/acme/config/vm.yaml
+uv run isvctl test run --no-upload -f ../isvctl-provider-acme/config/vm.yaml
+uv run isvctl test run --no-upload -f ../isvctl-provider-acme/config/storage.yaml --capability vm
 ```
+
+Storage additionally needs a populated manifest; the examples here omit it.
 
 Add `--dry-run` to any of these to list what would run and what would be
 skipped, without executing a thing.
@@ -110,47 +111,51 @@ it, so 100% is always relative to what you declared.
 
 ## Private provider repositories
 
-You do not need to contribute your provider scripts back to this repository.
-This repository supplies the CLI, validation suites, and validation code; your
-own repository supplies the provider `config/` and `scripts/` files.
+Keep your provider scripts in your own repository. The AI Cloud Validation
+Suite supplies the CLI, validation suites, and validation code; your repository
+supplies the provider `config/` and `scripts/` files. Run by config path during
+development, or register a revision using the upstream
+[provider registry guide](https://github.com/NVIDIA/ai-cloud-validation/blob/main/docs/guides/provider-registry.md).
 
-By default the scaffold is created in `isvctl/configs/providers-external/<name>/`,
-which git ignores here, and `--provider <name>` runs it like an in-tree provider:
+Generate the scaffold directly into the private provider repository path you
+intend to keep:
 
 ```bash
 git clone <ai-cloud-validation>
 cd ai-cloud-validation
 uv sync
 
-uv run isvctl provider scaffold acme
-ISVCTL_DEMO_MODE=1 uv run isvctl test run --provider acme --suite vm
+uv run isvctl provider scaffold acme --output-dir ../isvctl-provider-acme
 ```
 
-Make that directory your provider's own Git repository and implement the
-scripts there. Delete `.scaffold-meta` once it is a repository: the marker lets
-`isvctl provider scaffold --overwrite` replace the directory.
+Then initialize or connect that generated directory to your private Git repo
+and implement the scripts there:
 
 ```bash
-cd isvctl/configs/providers-external/acme
+cd ../isvctl-provider-acme
 git init
-rm .scaffold-meta
+# Remove the scaffold overwrite marker if present before maintaining this repository.
+rm -f .scaffold-meta
 git remote add origin git@github.com:acme/isvctl-provider-acme.git
 # implement scripts/*
 ```
 
-`isvctl provider fetch` and `isvctl provider remove` never touch a directory
-there that `fetch` did not create. To keep the repository elsewhere, pass
-`--output-dir` and run its configs by path from this checkout, e.g.
-`uv run isvctl test run -f ../isvctl-provider-acme/config/vm.yaml`.
+Run the private provider from the validation suite checkout by passing its
+config path:
 
-To let others find and fetch your provider at a pinned commit, fill in the
-registry entry the scaffold wrote to `isvctl/configs/providers-registry/acme.yaml`
-(isvctl skips it with a warning until then) and register it in the
-[Provider Registry](../../../../../docs/guides/provider-registry.md).
+```bash
+cd ../ai-cloud-validation
+uv run isvctl test run --no-upload -f ../isvctl-provider-acme/config/vm.yaml
+```
+
+Current limitation: out-of-tree provider YAML assumes you run `isvctl` from
+the validation suite checkout root. Suite imports and shared scripts use paths
+relative to that checkout; provider-owned scripts stay relative to the generated
+provider `config/` directory.
 
 ## Anatomy of a script
 
-Every Python script in this tree follows the same shape - this is what you're
+The per-step Python stubs follow this general shape - this is what you're
 copying:
 
 ```python
@@ -168,7 +173,7 @@ def main() -> int:
     # ╚═══════════════════════════════════════════════════════╝
 
     if DEMO_MODE:
-        # dummy-success values so make demo-test passes
+        # dummy-success values for demo contract checks
         result["success"] = True
         result[...] = ...
     else:
@@ -192,6 +197,6 @@ from a real serial console log archive or retention policy query.
 ## See also
 
 - [`config/`](../config/) - the YAML wiring that invokes these scripts
-- [`suites/README.md`](../../../suites/README.md) - per-step breakdown and JSON field reference
-- [AWS reference](../../../../../docs/references/aws.md) - working implementation of every script in this tree
-- [External Validation Guide](../../../../../docs/guides/external-validation-guide.md) - writing scripts, JSON output format
+- [`suites/README.md`](https://github.com/NVIDIA/ai-cloud-validation/blob/main/isvctl/configs/suites/README.md) - per-step breakdown and JSON field reference
+- [AWS reference](https://github.com/NVIDIA/ai-cloud-validation/blob/main/docs/references/aws.md) - working implementation of every script in this tree
+- [External Validation Guide](https://github.com/NVIDIA/ai-cloud-validation/blob/main/docs/guides/external-validation-guide.md) - writing scripts, JSON output format
