@@ -5,7 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 
 # Security
 
-`isvctl-provider-example` contains example provider scripts and configurations
+`external-provider-example` contains example provider scripts and configurations
 for the NVIDIA AI Cloud Validation Suite. It is not an NVIDIA-supported product.
 Demo results are synthetic and provide no assurance about a real platform's
 security or compliance.

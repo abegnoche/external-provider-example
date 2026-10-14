@@ -5,7 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 
 # Contributing
 
-Contributions to `isvctl-provider-example` are welcome. Read the [README](README.md)
+Contributions to `external-provider-example` are welcome. Read the [README](README.md)
 and follow our [Code of Conduct](CODE_OF_CONDUCT.md). Report suspected
 vulnerabilities privately using the [security policy](SECURITY.md).
 
@@ -45,9 +45,9 @@ For example, check changes to the VM wiring with:
 
 ```bash
 ISVCTL_DEMO_MODE=1 uv run isvctl test run --no-upload \
-  -f ../isvctl-provider-example/example/config/vm.yaml
+  -f ../external-provider-example/example/config/vm.yaml
 ISVCTL_DEMO_MODE=1 uv run isvctl test run --no-upload \
-  -f ../isvctl-provider-example/showcase/config/vm.yaml
+  -f ../external-provider-example/showcase/config/vm.yaml
 ```
 
 Use the local config paths above when testing edits; fetching a registry entry

@@ -62,7 +62,7 @@ Run from an AI Cloud Validation Suite checkout beside this repository:
 
 ```bash
 ISVCTL_DEMO_MODE=1 uv run isvctl test run --no-upload \
-  -f ../isvctl-provider-example/example/config/vm.yaml
+  -f ../external-provider-example/example/config/vm.yaml
 ```
 
 See the [repository README](../../README.md#reproducing-the-results) for the

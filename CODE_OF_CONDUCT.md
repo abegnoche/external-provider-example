@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 
 ## Overview
 
-This Code of Conduct applies to the isvctl-provider-example community.
+This Code of Conduct applies to the external-provider-example community.
 
 ### Intended audience
 

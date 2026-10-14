@@ -1,4 +1,4 @@
-# isvctl-provider-example
+# external-provider-example
 
 > **Example only - not a real provider.** The provider stubs return dummy
 > success under `ISVCTL_DEMO_MODE=1` and fail otherwise. Kubernetes and Slurm
@@ -44,9 +44,9 @@ git clone https://github.com/NVIDIA/ai-cloud-validation.git
 cd ai-cloud-validation
 git checkout v0.13.0
 uv sync
-git clone https://github.com/abegnoche/isvctl-provider-example.git ../isvctl-provider-example
+git clone https://github.com/abegnoche/external-provider-example.git ../external-provider-example
 
-ISVCTL_DEMO_MODE=1 uv run isvctl test run --no-upload -f ../isvctl-provider-example/example/config/vm.yaml
+ISVCTL_DEMO_MODE=1 uv run isvctl test run --no-upload -f ../external-provider-example/example/config/vm.yaml
 ```
 
 Some suites need a capability, mirroring the suite's `make demo-test`:

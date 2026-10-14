@@ -95,7 +95,7 @@ Suite checkout beside this repository:
 
   ```bash
   ISVCTL_DEMO_MODE=1 \
-    uv run isvctl test run --no-upload -f ../isvctl-provider-example/showcase/config/storage.yaml
+    uv run isvctl test run --no-upload -f ../external-provider-example/showcase/config/storage.yaml
   ```
 
 - Kubernetes run (StorageProviderApiCheck from the manifest; CSI/filesystem
@@ -104,7 +104,7 @@ Suite checkout beside this repository:
   ```bash
   export K8S_CSI_SHARED_FS_SC=showcase-rwx
   uv run isvctl test run \
-      --no-upload -f ../isvctl-provider-example/showcase/config/storage.yaml \
+      --no-upload -f ../external-provider-example/showcase/config/storage.yaml \
       --capability kubernetes \
       -- -k "K8sCsi or K8sFile or K8sNfs or StorageProviderApi"
   ```
@@ -155,7 +155,7 @@ the missing manifest, exercise the shim in demo mode:
 
 ```bash
 ISVCTL_DEMO_MODE=1 \
-  uv run isvctl test run --no-upload -f ../isvctl-provider-example/showcase/config/storage.yaml
+  uv run isvctl test run --no-upload -f ../external-provider-example/showcase/config/storage.yaml
 ```
 
 ## Delivering a real provider
